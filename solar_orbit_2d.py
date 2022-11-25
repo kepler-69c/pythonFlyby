@@ -1,6 +1,10 @@
 from data import *
 
 # setup the starting conditions
+# venus
+xv,yv,zv    = 0.72*AU,0,0
+xvv,yvv,zvv  = 0,v_ap_v,0
+
 # earth
 xe,ye,ze    = 1.0167*AU,0,0
 xve,yve,zve = 0,e_ap_v,0
@@ -20,15 +24,15 @@ xvs,yvs,zvs = 0,0,0
 t           = 0.0
 dt          = 1*daysec # every frame move this time
 
+xvlist,yvlist,zvlist = [],[],[]
 xelist,yelist,zelist = [],[],[]
 xslist,yslist,zslist = [],[],[]
 xmlist,ymlist,zmlist = [],[],[]
 xclist,yclist,zclist = [],[],[]
 
-# start simulation
-while t<5*365*daysec:
-    ################ earth #############
-    # compute G force on earth
+
+def compute(xe, ye, ze, xve, yve, zve):
+    # compute G force
     #rx,ry,rz = xs - xe, ys - ye, zs - ze
     rx,ry,rz = xe - xs, ye - ys, ze - zs
     modr3_e = (rx**2+ry**2+rz**2)**1.5
@@ -47,50 +51,30 @@ while t<5*365*daysec:
     ze += zve*dt
     
     # save the position in list
+    return xe, ye, ze, fx_e, fy_e, fz_e, xve, yve, zve
+
+# start simulation
+while t<5*365*daysec:
+    # ################ venus #############
+    xv, yv, zv, fx_v, fy_v, fz_v, xvv, yvv, zvv = compute(xv, yv, zv, xvv, yvv, zvv)
+    xvlist.append(xv)
+    yvlist.append(yv)
+    zvlist.append(zv)
+
+    # ################ earth #############
+    xe, ye, ze, fx_e, fy_e, fz_e, xve, yve, zve = compute(xe, ye, ze, xve, yve, zve)
     xelist.append(xe)
     yelist.append(ye)
     zelist.append(ze)
     
-    ################ Mars ##############
-    # compute G force on mars
-    rx_m,ry_m,rz_m = xm - xs, ym - ys, zm - zs
-    modr3_m = (rx_m**2+ry_m**2+rz_m**2)**1.5
-    fx_m = -gravconst_m*rx_m/modr3_m
-    fy_m = -gravconst_m*ry_m/modr3_m
-    fz_m = -gravconst_m*rz_m/modr3_m
-    
-    xvm += fx_m*dt/Mm
-    yvm += fy_m*dt/Mm
-    zvm += fz_m*dt/Mm
-    
-    # update position
-    xm += xvm*dt
-    ym += yvm*dt
-    zm += zvm*dt
-    
-    # add to list
+    # ################ Mars ##############
+    xm, ym, zm, fx_m, fy_m, fz_m, xvm, yvm, zvm = compute(xm, ym, zm, xvm, yvm, zvm)
     xmlist.append(xm)
     ymlist.append(ym)
     zmlist.append(zm)
     
-    ################ comet ##############
-    # compute G force on comet
-    rx_c,ry_c,rz_c = xc - xs, yc - ys, zc - zs
-    modr3_c = (rx_c**2+ry_c**2+rz_c**2)**1.5
-    fx_c = -gravconst_c*rx_c/modr3_c
-    fy_c = -gravconst_c*ry_c/modr3_c
-    fz_c = -gravconst_c*rz_c/modr3_c
-    
-    xvc += fx_c*dt/Mc
-    yvc += fy_c*dt/Mc
-    zvc += fz_c*dt/Mc
-    
-    # update position
-    xc += xvc*dt
-    yc += yvc*dt 
-    zc += zvc*dt
-    
-    # add to list
+    # ################ comet ##############
+    xc, yc, zc, fx_c, fy_c, fz_c, xvc, yvc, zvc = compute(xc, yc, zc, xvc, yvc, zvc)
     xclist.append(xc)
     yclist.append(yc)
     zclist.append(zc)
@@ -127,6 +111,10 @@ fig, ax = plt.subplots(figsize=(10,10))
 ax.set_aspect('equal')
 ax.grid()
 
+line_v,     = ax.plot([],[],'-g',lw=1)
+point_v,    = ax.plot([AU*0.72], [0], marker="o", markersize=4, markeredgecolor="orange", markerfacecolor="orange")
+text_v      = ax.text(AU*0.72,0,'Venus')
+
 line_e,     = ax.plot([],[],'-g',lw=1)
 point_e,    = ax.plot([AU], [0], marker="o", markersize=4, markeredgecolor="blue", markerfacecolor="blue")
 text_e      = ax.text(AU,0,'Earth')
@@ -142,14 +130,18 @@ text_c      = ax.text(2*AU,0,'Comet')
 point_s,    = ax.plot([0], [0], marker="o", markersize=7, markeredgecolor="yellow", markerfacecolor="yellow")
 text_s      = ax.text(0,0,'Sun')
 
+vxdata,vydata = [],[]                   # venus track
 exdata,eydata = [],[]                   # earth track
 sxdata,sydata = [],[]                   # sun track
 mxdata,mydata = [],[]                   # mars track
-cxdata,cydata = [],[]
+cxdata,cydata = [],[]                   # comet track
 
 print(len(xelist))
 
 def update(i):
+    vxdata.append(xvlist[i])
+    vydata.append(yvlist[i])
+
     exdata.append(xelist[i])
     eydata.append(yelist[i])
     
@@ -158,7 +150,11 @@ def update(i):
     
     cxdata.append(xclist[i])
     cydata.append(yclist[i])
-    
+
+    line_v.set_data(vxdata,vydata)
+    point_v.set_data(xvlist[i],yvlist[i])
+    text_v.set_position((xvlist[i],yvlist[i]))
+
     line_e.set_data(exdata,eydata)
     point_e.set_data(xelist[i],yelist[i])
     text_e.set_position((xelist[i],yelist[i]))
@@ -178,7 +174,7 @@ def update(i):
     ax.set_xlim(-3*AU,3*AU)
     ax.set_ylim(-3*AU,3*AU)
     #print(i)
-    return line_e,point_s,point_e,line_m,point_m,text_e,text_m,text_s,line_c,point_c,text_c
+    return line_v,point_v,text_v,line_e,point_s,point_e,line_m,point_m,text_e,text_m,text_s,line_c,point_c,text_c
 
 anim = animation.FuncAnimation(fig,func=update,frames=len(xelist),interval=1,blit=True)
 plt.show()
