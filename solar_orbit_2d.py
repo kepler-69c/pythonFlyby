@@ -1,29 +1,29 @@
 from data import *
 
-class planet:
-    def __init__(self, name, xp, yp, zp, xv, yv, zv):
-        self.name = name
-        self.xp, self.yp, self.zp = xp, yp, zp
-        self.xv, self.yv, self.zv = xv, yv, zv
-        self.xlist, self.ylist, self.zlist = [],[],[]
+# class planet:
+#     def __init__(self, name, xp, yp, zp, xv, yv, zv):
+#         self.name = name
+#         self.xp, self.yp, self.zp = xp, yp, zp
+#         self.xv, self.yv, self.zv = xv, yv, zv
+#         self.xlist, self.ylist, self.zlist = [],[],[]
 
-    def __str__(self):
-         return f"Planet {self.name}:\n - Position: {self.xp, self.yp, self.zp}\n - Velocity: {self.xv, self.yv, self.zv}"
+#     def __str__(self):
+#          return f"Planet {self.name}:\n - Position: {self.xp, self.yp, self.zp}\n - Velocity: {self.xv, self.yv, self.zv}"
 
-venus = planet("venus", 0.72*AU, 0, 0, 0, v_ap_v, 0)
-print(venus)
+# venus = planet("venus", 0.72*AU, 0, 0, 0, v_ap_v, 0)
+# print(venus)
 
-earth = planet("earth", 1.0167*AU, 0, 0, 0, e_ap_v, 0)
-print(earth)
+# earth = planet("earth", 1.0167*AU, 0, 0, 0, e_ap_v, 0)
+# print(earth)
 
-mars = planet("mars", 1.666*AU, 0, 0, 0, m_ap_v, 0)
-print(mars)
+# mars = planet("mars", 1.666*AU, 0, 0, 0, m_ap_v, 0)
+# print(mars)
 
-comet = planet("comet", 1.0167*AU, 0, 0, 0, e_ap_v*0.9, 0)
-print(comet)
+# comet = planet("comet", 1.0167*AU, 0, 0, 0, e_ap_v*0.9, 0)
+# print(comet)
 
-sun = planet("sun", 0, 0, 0, 0, 0, 0)
-print(sun)
+# sun = planet("sun", 0, 0, 0, 0, 0, 0)
+# print(sun)
 
 # setup the starting conditions
 # venus
