@@ -8,7 +8,6 @@ mars = planet("Mars", 499)
 
 # ###########################################################################################################
 from matplotlib import animation
-from matplotlib.offsetbox import AnchoredText
 import matplotlib
 matplotlib.rcParams['animation.embed_limit'] = 2**128
 matplotlib.use("TkAgg") # for mac
@@ -17,10 +16,6 @@ from IPython.display import HTML
 fig, ax = plt.subplots(figsize=(10,10))
 ax.set_aspect('equal')
 ax.grid()
-
-at = AnchoredText(earth.start, prop=dict(size=15), frameon=True, loc='upper left')
-at.patch.set_boxstyle("round,pad=0.,rounding_size=0.2")
-ax.add_artist(at)
 
 line_a,     = ax.plot([],[],'-g',lw=1)
 point_a,    = ax.plot([AU], [0], marker="o", markersize=4, markeredgecolor="brown", markerfacecolor="brown")
@@ -36,6 +31,8 @@ text_c      = ax.text(2*AU,0,'Mars')
 
 point_d     = ax.plot([0], [0], marker="o", markersize=8, markeredgecolor="yellow", markerfacecolor="yellow")
 text_d      = ax.text(0,0,"Sun")
+
+text_date   = ax.text(-2.5*1E11, 2.4*1E11, earth.start)
 
 axdata,aydata = [],[] # venus track
 bxdata,bydata = [],[] # earth track
@@ -67,8 +64,9 @@ def update(i):
     ax.set_xlim(-2*AU,2*AU)
     ax.set_ylim(-2*AU,2*AU)
 
-    #print(i)
-    return line_a,point_a,text_a,line_b,point_b,text_b,line_c,point_c,text_c
+    text_date.set_text(earth.d[i])
+
+    return line_a,point_a,text_a,line_b,point_b,text_b,line_c,point_c,text_c, text_date
 
 anim = animation.FuncAnimation(fig,func=update,frames=len(earth.x),interval=10,blit=True)
 plt.show()

@@ -2,6 +2,7 @@ from astroquery.jplhorizons import Horizons
 import matplotlib.pyplot as plt
 from celestialBodies import planet
 
+sun = planet("Sun", 10)
 venus = planet("Venus", 299)
 earth = planet("Earth", 399)
 mars = planet("Mars", 499)
