@@ -3,10 +3,10 @@ from data import *
 
 start = "2021-11-21"
 
-sun = planet("Sun", 10, start=start)
-venus = planet("Venus", 299, start=start)
-earth = planet("Earth", 399, start=start)
-mars = planet("Mars", 499, start=start)
+sun = planet("Sun", 10, Ms, start=start)
+venus = planet("Venus", 299, Mv, start=start)
+earth = planet("Earth", 399, Me, start=start)
+mars = planet("Mars", 499, Mm, start=start)
 
 probe = spaceProbe(30, sun, venus, earth, mars, daysec, 1)
 
