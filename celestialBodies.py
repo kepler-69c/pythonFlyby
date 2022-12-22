@@ -32,16 +32,16 @@ class planet:
         self.getVectors()
 
 class spaceProbe:
-    AU2meters: int = 149597870700
     xv, yv, zv = 0,0,0
     xlist,ylist,zlist = [],[],[]
     c = 0
     dt = 24*3600
 
-    def computeGravity(self):
-        gravconst = G*Ms*self.mass
+    def computeGravity(self, planet2, mass2, position, c):
+        hx, hy, hz = position
+        gravconst = G*mass2*self.mass
         # compute G force
-        rx,ry,rz = self.x - self.sun.x[self.c], self.y - self.sun.y[self.c], self.z - self.sun.z[self.c]
+        rx,ry,rz = hx - planet2.x[c], hy - planet2.y[c], hz - planet2.z[c]
         modr3 = (rx**2+ry**2+rz**2)**1.5
         fx = -gravconst*rx/modr3
         fy = -gravconst*ry/modr3
@@ -53,31 +53,30 @@ class spaceProbe:
         self.zv += fz*self.dt/self.mass
         
         # update position
-        self.x += self.xv*self.dt
-        self.y += self.yv*self.dt 
-        self.z += self.zv*self.dt
+        hx += self.xv*self.dt
+        hy += self.yv*self.dt 
+        hz += self.zv*self.dt
 
-        self.xlist.append(self.x)
-        self.ylist.append(self.y)
-        self.zlist.append(self.z)
+        return hx,hy,hz
 
-        self.c += 1
-
-    def __init__(self, mass, sun, venus, earth, mars, timestep):
-        self.sun = sun
-        self.venus = venus
-        self.mars = mars
-
+    def __init__(self, mass, sun, venus, earth, mars, timestep, velocity=1):
         self.earth = earth
         self.x = self.earth.x[0]
         self.y = self.earth.y[0]
         self.z = self.earth.z[0]
-        self.xv = self.earth.vx[0]/daysec
-        self.yv = self.earth.vy[0]/daysec
-        self.zv = self.earth.vz[0]/daysec
+        self.xv = self.earth.vx[0]/timestep * velocity
+        self.yv = self.earth.vy[0]/timestep * velocity
+        self.zv = self.earth.vz[0]/timestep * velocity
 
         self.mass = mass
-        if timestep == "1d":
-            self.dt = 1*daysec # every frame move this time
+        self.dt = timestep # every frame move this time
+
         for i in range(len(earth.x)):
-            self.computeGravity()
+            x, y, z = self.computeGravity(sun, Ms, [self.x, self.y, self.z], self.c)
+            x, y, z = self.computeGravity(venus, Mv, [x, y, z], self.c)
+            self.c += 1
+
+            self.x, self.y, self.z = x, y, z
+            self.xlist.append(x)
+            self.ylist.append(y)
+            self.zlist.append(z)
