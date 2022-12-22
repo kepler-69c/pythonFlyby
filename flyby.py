@@ -6,13 +6,14 @@ start = "2021-11-21"
 sun = planet("Sun", 10, start=start)
 venus = planet("Venus", 299, start=start)
 earth = planet("Earth", 399, start=start)
-print(f"original {earth.x[0]/1E11}")
 mars = planet("Mars", 499, start=start)
+
+probe = spaceProbe(Me, sun, venus, earth, mars, "1d")
 
 # space probe ############################################################
 # earth
 xe,ye,ze    = earth.x[0],earth.y[0],earth.z[0]
-xve,yve,zve = 0,e_ap_v,0
+xve,yve,zve = earth.vx[0]/daysec,earth.vy[0]/daysec,earth.vz[0]/daysec
 # sun
 xs,ys,zs    = 0,0,0
 xvs,yvs,zvs = 0,0,0

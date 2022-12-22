@@ -41,10 +41,7 @@ class spaceProbe:
     def computeGravity(self):
         gravconst = G*Ms*self.mass
         # compute G force
-        rx,ry,rz = self.x/self.AU2meters - self.sun.x[self.c], self.y/self.AU2meters - self.sun.y[self.c], self.z/self.AU2meters - self.sun.z[self.c]
-        if self.c < 3:
-            print(self.x/1E11)
-            print(rx/1E11)
+        rx,ry,rz = self.x - self.sun.x[self.c], self.y - self.sun.y[self.c], self.z - self.sun.z[self.c]
         modr3 = (rx**2+ry**2+rz**2)**1.5
         fx = -gravconst*rx/modr3
         fy = -gravconst*ry/modr3
@@ -75,14 +72,12 @@ class spaceProbe:
         self.x = self.earth.x[0]
         self.y = self.earth.y[0]
         self.z = self.earth.z[0]
-        self.xv = self.earth.vx[0]
-        self.yv = self.earth.vy[0]
-        self.zv = self.earth.vz[0]
+        self.xv = self.earth.vx[0]/daysec
+        self.yv = self.earth.vy[0]/daysec
+        self.zv = self.earth.vz[0]/daysec
 
         self.mass = mass
         if timestep == "1d":
-            print(self.x/1E11)
-            print(timestep)
             self.dt = 1*daysec # every frame move this time
         for i in range(len(earth.x)):
             self.computeGravity()
