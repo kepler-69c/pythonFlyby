@@ -1,12 +1,12 @@
-# Simulate Solar Orbit in Python
+> forked from ![xhinker](https://github.com/xhinker)/![orbit](https://github.com/xhinker/orbit)
 
-The repo includes three implementations of simulation.
+# Simulate Flyby in Python
+This project tries to calculate a simple orbit of e.g. a space probe that depends from several planets. The positions of the planets are fetched as Ephemeris from NASA's ![Horizon system](https://ssd.jpl.nasa.gov/horizons/), the Space Probe is calculated with the ![Euler-Cromer method](https://en.wikipedia.org/wiki/Semi-implicit_Euler_method).
 
-1. File `solar_orbit_2d.py` plot the 2d orbit with Matplotlib
-![solar_2d](/sample_gifs/solar_orbit_2d.gif)
-1. File `solar_orbit_3d_plt.py` plot the 3d orbit with Matplotlib3d
-![solar_3d](sample_gifs/solar_orbit_3d_plt.gif)
-1. File 'solar_orbit_3d_ipyvolume.py' plot 3d orbit with [ipyvolume](https://ipyvolume.readthedocs.io/en/latest/index.html)
-![solar_3d_ipy](sample_gifs/solar_3d_ipyvolume.gif)
-1. File 'three_body.py' simulate a three body orbit
-![three_body.py](sample_gifs/three_body_2.gif)
+### Contents:
+The repo contains multiple files:
+1. `solar-system-plt.py`, which only uses the Ephemeris to plot the orbits with pyplot.
+![solar system](images/Screenshot%20from%202022-12-22%2018-23-18.png)
+
+2. `flyby.py`, where the solar system is animated with a space probe that makes a flyby around venus.
+![flyby](images/Screen%20Recording%202022-12-22%20at%2018.04.40.mov)

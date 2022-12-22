@@ -1,11 +1,12 @@
 from astroquery.jplhorizons import Horizons
 import matplotlib.pyplot as plt
 from celestialBodies import planet
+from data import *
 
-sun = planet("Sun", 10)
-venus = planet("Venus", 299)
-earth = planet("Earth", 399)
-mars = planet("Mars", 499)
+sun = planet("Sun", 10, Ms)
+venus = planet("Venus", 299, Mv)
+earth = planet("Earth", 399, Me)
+mars = planet("Mars", 499, Mm)
 
 print(f"{venus}\n{earth}\n{mars}")
 #ceres = planet("Ceres", 568)

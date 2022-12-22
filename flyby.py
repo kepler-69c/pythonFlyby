@@ -8,7 +8,7 @@ venus = planet("Venus", 299, Mv, start=start)
 earth = planet("Earth", 399, Me, start=start)
 mars = planet("Mars", 499, Mm, start=start)
 
-probe = spaceProbe(30, sun, venus, earth, mars, daysec, 1)
+probe = spaceProbe(30, sun, venus, earth, mars, daysec, 0.8)
 
 # animation ###########################################################################################################
 import matplotlib.pyplot as plt
