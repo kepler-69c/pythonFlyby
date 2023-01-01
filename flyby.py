@@ -1,14 +1,33 @@
 from celestialBodies import planet, spaceProbe
 from data import *
+from math import sqrt
 
-start = "2021-11-21"
+start = "2021-11-22"
+# venusEncounter = "2022-04-04"
 
 sun = planet("Sun", 10, Ms, start=start)
-venus = planet("Venus", 299, Mv, start=start)
+venus = planet("Venus", 299, 8*Mv, start=start)
 earth = planet("Earth", 399, Me, start=start)
 mars = planet("Mars", 499, Mm, start=start)
 
-probe = spaceProbe(30, sun, venus, earth, mars, daysec, 0.8)
+earth.z = [0 for i in range(len(earth.z))]
+earth.vz = [0 for i in range(len(earth.vz))]
+venus.z = [0 for i in range(len(venus.z))]
+venus.vz = [0 for i in range(len(venus.vz))]
+
+vCurrent = sqrt((earth.vx[0]/daysec)**2 + (earth.vy[0]/daysec)**2 + (earth.vz[0]/daysec)**2)
+# vDesired = vCurrent - 4.5E3
+
+#3#3 -> slightly larger orbit
+#3.1825E3 -> smaller orbit, significant change
+
+vDesired = vCurrent + 4511
+vPercent = vDesired/vCurrent
+print(vCurrent)
+print(vDesired)
+print(vPercent)
+
+probe = spaceProbe(30, sun, venus, earth, mars, daysec, vPercent)
 
 # animation ###########################################################################################################
 import matplotlib.pyplot as plt
